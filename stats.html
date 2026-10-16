@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>FRANK.DB · visitor stats</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#05080b; --panel:rgba(12,22,28,.8); --line:rgba(120,220,230,.18); --text:#cfe0e6; --muted:#7794a0; --teal:#3ee6e0; --yellow:#f4e04d; --magenta:#ff3d8b; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:14px/1.6 "JetBrains Mono", ui-monospace, Consolas, monospace; }
+    header { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; padding:18px clamp(16px,4vw,40px); border-bottom:1px solid var(--line); }
+    h1 { margin:0; font:700 20px "Silkscreen", monospace; letter-spacing:1px; }
+    h1 b { color:var(--yellow); font-weight:700; }
+    a { color:var(--teal); text-decoration:none; }
+    main { max-width:1100px; margin:0 auto; padding:28px clamp(16px,4vw,40px) 60px; }
+    .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:14px; }
+    .kpi { background:var(--panel); border:1px solid var(--line); padding:16px 18px; }
+    .kpi small { color:var(--muted); letter-spacing:1px; text-transform:uppercase; font-size:11px; }
+    .kpi b { display:block; font:700 30px "Silkscreen", monospace; color:var(--teal); margin-top:6px; }
+    .kpi:nth-child(2) b { color:var(--yellow); } .kpi:nth-child(3) b { color:var(--magenta); }
+    h2 { font:400 14px "Silkscreen", monospace; color:var(--yellow); letter-spacing:2px; margin:34px 0 12px; }
+    .panel { background:var(--panel); border:1px solid var(--line); padding:18px; }
+    .chart { display:flex; align-items:flex-end; gap:6px; height:180px; }
+    .col { flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:6px; min-width:0; height:100%; }
+    .bars { display:flex; align-items:flex-end; gap:2px; width:100%; flex:1; }
+    .bar { flex:1; min-height:2px; background:var(--teal); } .bar.v { background:var(--magenta); opacity:.8; }
+    .col span { font-size:10px; color:var(--muted); }
+    .legend { color:var(--muted); font-size:12px; margin-top:10px; } .legend i { display:inline-block; width:10px; height:10px; margin:0 6px 0 14px; } .legend i:first-child { margin-left:0; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; }
+    table { width:100%; border-collapse:collapse; } td { padding:5px 0; border-bottom:1px dotted var(--line); } td:last-child { text-align:right; color:var(--yellow); }
+    .empty { color:var(--muted); }
+    #status { color:var(--muted); font-size:12px; }
+    .err { color:var(--magenta); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>FRANK<b>.DB</b> · visitor stats</h1>
+    <div><span id="status">loading…</span> · <a href="./">back to site</a></div>
+  </header>
+  <main>
+    <div class="kpis" id="kpis"></div>
+    <h2>LAST 14 DAYS (UTC)</h2>
+    <div class="panel"><div class="chart" id="chart"></div>
+      <div class="legend"><i style="background:var(--teal)"></i>visits <i style="background:var(--magenta)"></i>page views</div></div>
+    <div class="grid" id="tables"></div>
+    <h2>RECENT ACTIVITY</h2>
+    <div class="panel"><table id="recent"></table></div>
+    <p class="empty">Anonymous counts only: no IP addresses or personal data are stored. "Visit" = a new browser session; "page view" = a section opened.</p>
+  </main>
+  <script>
+    const $ = (s) => document.querySelector(s);
+    const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+    function table(title, obj) {
+      const rows = Object.entries(obj || {}).sort((a, b) => b[1] - a[1]);
+      return `<div><h2>${title}</h2><div class="panel"><table>${rows.length ? rows.map(([k, v]) => `<tr><td>${esc(k)}</td><td>${v}</td></tr>`).join("") : '<tr><td class="empty">no data yet</td><td></td></tr>'}</table></div></div>`;
+    }
+    async function load() {
+      try {
+        const s = await (await fetch("/api/stats", { cache: "no-store" })).json();
+        const t = s.totals;
+        $("#kpis").innerHTML = [["total visits", t.visits], ["unique visitors", t.uniqueVisitors], ["page views", t.pageViews], ["visits today", t.todayVisits], ["unique today", t.todayUnique]]
+          .map(([k, v]) => `<div class="kpi"><small>${k}</small><b>${v}</b></div>`).join("");
+        const max = Math.max(1, ...s.days.map((d) => Math.max(d.visits, d.views)));
+        $("#chart").innerHTML = s.days.map((d) => `<div class="col" title="${d.date}: ${d.visits} visits, ${d.views} views">
+          <div class="bars"><div class="bar" style="height:${(d.visits / max) * 100}%"></div><div class="bar v" style="height:${(d.views / max) * 100}%"></div></div><span>${d.date.slice(5)}</span></div>`).join("");
+        $("#tables").innerHTML = table("PAGES", s.pages) + table("LANGUAGE", s.langs) + table("VIEW MODE", s.modes) + table("DEVICE", s.devices) + table("REFERRERS", s.referrers);
+        $("#recent").innerHTML = s.recent.length ? s.recent.map((e) => `<tr><td>${esc(e.t.replace("T", " ").replace("Z", ""))}</td><td>${esc(e.k)} · ${esc(e.p)}</td><td>${esc(e.l)} / ${esc(e.m)} / ${esc(e.w)}</td></tr>`).join("") : '<tr><td class="empty">no visits yet</td></tr>';
+        $("#status").textContent = "updated " + new Date().toLocaleTimeString();
+        $("#status").className = "";
+      } catch (e) {
+        $("#status").textContent = "backend not reachable (run serve.ps1)";
+        $("#status").className = "err";
+      }
+    }
+    load(); setInterval(load, 10000);
+  </script>
+</body>
+</html>

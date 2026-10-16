@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FRANK.DB · Tzuyang Lin 林子洋</title>
+  <meta name="description" content="Tzuyang (Frank) Lin: data analyst and field deployment engineer. Projects, skills, resume, footprints and a personal log, served from a database.">
+  <meta name="theme-color" content="#05080b">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FRANK.DB">
+  <meta property="og:title" content="FRANK.DB · Tzuyang (Frank) Lin 林子洋">
+  <meta property="og:description" content="Data analyst and field deployment engineer. A portfolio that works like a database: projects, footprints around the world, skills and a personal log.">
+  <meta property="og:url" content="https://zzyang0.github.io/">
+  <meta property="og:image" content="https://zzyang0.github.io/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&family=Silkscreen:wght@400;700&family=Noto+Sans+SC:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="importmap">
+    { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    } }
+  </script>
+</head>
+<body>
+  <!-- loader: digital rain + HUD ring -->
+  <div id="loader" aria-hidden="true">
+    <canvas id="rain"></canvas>
+    <div class="hud">
+      <svg viewBox="0 0 300 300" class="hud-svg">
+        <defs><path id="ringPath" d="M150,150 m-118,0 a118,118 0 1,1 236,0 a118,118 0 1,1 -236,0"/></defs>
+        <circle cx="150" cy="150" r="138" class="ring-outer"/>
+        <g class="ring-text"><text><textPath href="#ringPath">FRANK.DB · 彰化 · 宁波 · SEATTLE · BERKELEY · NEW YORK · 上海 · SELECT * FROM life ·</textPath></text></g>
+        <circle cx="150" cy="150" r="96" class="ring-arc"/>
+        <circle cx="150" cy="150" r="84" class="ring-inner"/>
+        <circle cx="150" cy="150" r="104" class="ring-progress" id="ring-progress"/>
+      </svg>
+      <div class="hud-center">
+        <div class="hud-title" data-i18n="loader.title">LOADING</div>
+        <div class="hud-sub"><span data-i18n="loader.sub">connecting to frank.db</span><span class="dots"></span></div>
+        <div class="hud-pct" id="hud-pct">0%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <!-- top bar: the main navigation -->
+  <header class="topbar">
+    <a class="brand" href="./" data-go="top"><span class="dot"></span>FRANK<span class="accent">.DB</span></a>
+    <nav class="topnav" id="topnav" aria-label="Sections"></nav>
+    <div class="toggles">
+      <div class="seg" role="group" aria-label="View">
+        <button id="mode-simple"><i class="fa-solid fa-wand-magic-sparkles"></i><span data-i18n="mode.simple">Simple</span></button>
+        <button id="mode-sql"><i class="fa-solid fa-database"></i><span>SQL</span></button>
+      </div>
+      <div class="seg" role="group" aria-label="Language">
+        <button id="lang-en">EN</button>
+        <button id="lang-zh">中</button>
+      </div>
+      <button class="menu-btn" id="menu-btn" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </header>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Sections"></nav>
+
+  <!-- HOME -->
+  <section id="top" class="hero page" data-page="top">
+    <canvas id="city"></canvas>
+    <div class="hero-vignette"></div>
+    <div class="hero-content">
+      <p class="conn">&gt; <span data-i18n="hero.conn">CONNECTED TO</span> <b>lin.frank@frank.db</b> · <span id="latency">12</span>ms</p>
+      <h1 class="glitch" data-text="TZUYANG LIN">TZUYANG LIN</h1>
+      <p class="aka"><span class="tag">AKA</span> FRANK <span class="zh">林子洋</span></p>
+      <p class="titles" id="titles"></p>
+      <p class="tagline" id="tagline"></p>
+
+      <form class="console" id="console" autocomplete="off">
+        <label for="q" class="prompt" id="prompt"><i class="fa-solid fa-magnifying-glass"></i></label>
+        <input id="q" name="q" spellcheck="false">
+        <button type="submit" class="btn primary sm"><span data-i18n="hero.run">GO</span> <i class="fa-solid fa-arrow-right"></i></button>
+      </form>
+      <div class="console-out" id="console-out" aria-live="polite"></div>
+    </div>
+    <div class="visit-badge" id="visit-badge" hidden><i class="fa-solid fa-eye"></i><span class="js-visits"></span></div>
+  </section>
+
+  <div class="layout">
+    <aside class="schema" aria-label="Schema">
+      <div class="schema-title">SCHEMA <span>public</span></div>
+      <ul id="schema-list"></ul>
+      <div class="schema-foot">
+        <div>engine: <b>human/1.0</b></div>
+        <div>uptime: <b id="uptime">0s</b></div>
+        <div><i class="fa-regular fa-clock"></i> <b id="clock">--:--:--</b></div>
+      </div>
+    </aside>
+
+    <main id="main">
+      <!-- ABOUT -->
+      <section id="profile" class="table-section page" data-page="profile">
+        <div class="sec-head"><i class="fa-solid fa-id-badge"></i><div><h2 data-i18n="sec.profile.title"></h2><p data-i18n="sec.profile.sub"></p></div><span class="sec-no">01</span></div>
+        <div class="query"><span class="kw">SELECT</span> * <span class="kw">FROM</span> profile <span class="kw">WHERE</span> name = <span class="str">'frank'</span>;</div>
+        <div class="profile-grid">
+          <div class="card-wrap">
+            <canvas id="badge"></canvas>
+            <div class="card-hint"><i class="fa-solid fa-hand-pointer"></i> <span data-i18n="card.drag"></span></div>
+          </div>
+          <div>
+            <div class="v-simple"><div class="bio" id="bio"></div><div class="title-tags" id="profile-titles"></div></div>
+            <div class="v-tech"><table class="kv" id="profile-table"></table></div>
+          </div>
+        </div>
+        <div class="rows-meta" id="profile-meta"></div>
+      </section>
+
+      <!-- FOOTPRINTS -->
+      <section id="footprints" class="table-section page" data-page="footprints">
+        <div class="sec-head"><i class="fa-solid fa-earth-asia"></i><div><h2 data-i18n="sec.footprints.title"></h2><p data-i18n="sec.footprints.sub"></p></div><span class="sec-no">02</span></div>
+        <div class="query"><span class="kw">SELECT</span> city, lat, lng, stay <span class="kw">FROM</span> footprints <span class="kw">ORDER BY</span> arrived;</div>
+        <div class="fp-grid">
+          <div class="globe-wrap">
+            <canvas id="globe"></canvas>
+            <div id="globe-labels"></div>
+            <div class="card-hint"><i class="fa-solid fa-hand-pointer"></i> <span data-i18n="fp.drag"></span></div>
+          </div>
+          <div>
+            <div class="v-simple"><ol class="fp-list" id="fp-list"></ol></div>
+            <div class="v-tech" id="fp-table"></div>
+          </div>
+        </div>
+        <div class="rows-meta" id="fp-meta"></div>
+      </section>
+
+      <!-- EXPERIENCE + EDUCATION -->
+      <section id="experience" class="table-section page" data-page="experience">
+        <div class="sec-head"><i class="fa-solid fa-briefcase"></i><div><h2 data-i18n="sec.experience.title"></h2><p data-i18n="sec.experience.sub"></p></div><span class="sec-no">03</span></div>
+        <div class="query"><span class="kw">SELECT</span> company, title, period <span class="kw">FROM</span> experience <span class="kw">ORDER BY</span> start <span class="kw">DESC</span>;</div>
+        <div class="v-simple"><div class="records stagger" id="experience-list"></div></div>
+        <div class="v-tech" id="experience-table"></div>
+        <div class="rows-meta" id="exp-meta"></div>
+
+        <div class="sec-head sub"><i class="fa-solid fa-graduation-cap"></i><div><h2 data-i18n="sec.education.title"></h2><p data-i18n="sec.education.sub"></p></div></div>
+        <div class="query sub"><span class="kw">SELECT</span> * <span class="kw">FROM</span> education;</div>
+        <div class="v-simple"><div class="edu stagger" id="education-list"></div></div>
+        <div class="v-tech" id="education-table"></div>
+        <div class="rows-meta" id="edu-meta"></div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section id="projects" class="table-section page" data-page="projects">
+        <div class="sec-head"><i class="fa-solid fa-flask"></i><div><h2 data-i18n="sec.projects.title"></h2><p data-i18n="sec.projects.sub"></p></div><span class="sec-no">04</span></div>
+        <div class="query"><span class="kw">SELECT</span> * <span class="kw">FROM</span> projects <span class="kw">WHERE</span> tag <span class="kw">IN</span> (<span class="str" id="proj-filter-label">'*'</span>) <span class="kw">ORDER BY</span> year <span class="kw">DESC</span>;</div>
+        <div class="proj-tools">
+          <div class="seg" id="proj-views" role="tablist"></div>
+          <div class="chips" id="proj-chips"></div>
+        </div>
+        <div id="proj-view"></div>
+        <div id="proj-detail"></div>
+        <div class="rows-meta" id="proj-meta"></div>
+      </section>
+
+      <!-- SKILLS -->
+      <section id="skills" class="table-section page" data-page="skills">
+        <div class="sec-head"><i class="fa-solid fa-screwdriver-wrench"></i><div><h2 data-i18n="sec.skills.title"></h2><p data-i18n="sec.skills.sub"></p></div><span class="sec-no">05</span></div>
+        <div class="query"><span class="kw">SELECT</span> skill, level <span class="kw">FROM</span> skills <span class="kw">GROUP BY</span> category;</div>
+        <div class="v-simple"><div class="skills stagger" id="skills-grid"></div><div class="learning" id="learning"></div></div>
+        <div class="v-tech" id="skills-table"></div>
+        <div class="rows-meta" id="skills-meta"></div>
+      </section>
+
+      <!-- RESUME -->
+      <section id="resume" class="table-section page" data-page="resume">
+        <div class="sec-head"><i class="fa-solid fa-file-pdf"></i><div><h2 data-i18n="sec.resume.title"></h2><p data-i18n="sec.resume.sub"></p></div><span class="sec-no">06</span></div>
+        <div class="query"><span class="kw">SELECT</span> * <span class="kw">FROM</span> resume <span class="kw">WHERE</span> lang <span class="kw">IN</span> (<span class="str">'en'</span>, <span class="str">'zh'</span>);</div>
+        <div class="docs-note" id="resume-private"></div>
+        <div class="resume-bar">
+          <div class="seg big" id="resume-tabs" role="tablist"></div>
+          <div class="resume-actions" id="resume-actions"></div>
+        </div>
+        <div class="resume-frame-wrap"><iframe id="resume-frame" title="Resume PDF"></iframe></div>
+        <p class="resume-note" data-i18n="resume.note"></p>
+        <div class="rows-meta" id="resume-meta"></div>
+      </section>
+
+      <!-- LOG -->
+      <section id="log" class="table-section page" data-page="log">
+        <div class="sec-head"><i class="fa-solid fa-camera-retro"></i><div><h2 data-i18n="sec.log.title"></h2><p data-i18n="sec.log.sub"></p></div><span class="sec-no">07</span></div>
+        <div class="query"><span class="kw">SELECT</span> * <span class="kw">FROM</span> log <span class="kw">ORDER BY</span> created_at <span class="kw">DESC</span>;</div>
+        <div class="v-simple"><div class="log-grid stagger" id="log-grid"></div></div>
+        <div class="v-tech" id="log-table"></div>
+        <div class="rows-meta" id="log-meta"></div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact" class="table-section page" data-page="contact">
+        <div class="sec-head"><i class="fa-solid fa-satellite-dish"></i><div><h2 data-i18n="sec.contact.title"></h2><p data-i18n="sec.contact.sub"></p></div><span class="sec-no">08</span></div>
+        <div class="query"><span class="kw">SELECT</span> channel, handle <span class="kw">FROM</span> contact;</div>
+        <div class="v-simple"><div class="contact-wrap" id="contact-wrap"></div></div>
+        <div class="v-tech" id="contact-table"></div>
+        <div class="rows-meta" id="contact-meta"></div>
+        <p class="sign-off" data-i18n="contact.signoff"></p>
+      </section>
+
+      <div class="pager" id="pager"></div>
+    </main>
+  </div>
+
+  <footer class="foot">
+    <span>© <span id="year"></span> Tzuyang (Frank) Lin · 林子洋</span>
+    <span class="foot-visits" id="foot-visits" hidden><i class="fa-solid fa-eye"></i> <span class="js-visits"></span></span>
+    <span><span data-i18n="footer.built"></span> <b>frank.db</b></span>
+  </footer>
+
+  <dialog id="modal">
+    <div class="modal-bar"><span id="modal-title">record</span><button id="modal-close" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+    <div id="modal-body"></div>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

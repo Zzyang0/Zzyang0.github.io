@@ -1,0 +1,12 @@
+# visitor data from the local counter stays on your machine
+_data/
+
+# private documents are never published (the site shows "available on request")
+assets/resume/*.pdf
+assets/diplomas/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
