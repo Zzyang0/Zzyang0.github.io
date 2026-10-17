@@ -10,6 +10,8 @@ import { config } from "./config.js";
 // Resume PDFs and diploma scans are only shown when config.showPrivateDocs is true.
 const DOCS = !!config.showPrivateDocs;
 const RESUME = !!config.showResume;
+// Diplomas: only the small watermarked display copies in assets/diploma-preview/ are ever published.
+const DIPLOMA = !!config.showDiplomas || DOCS;
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -208,8 +210,8 @@ function renderExperience() {
 
   $("#education-list").innerHTML = education.map((e, i) => `
     <article class="edu-card" style="--i:${i}">
-      ${DOCS ? `<button class="diploma-thumb" data-diploma="${i}" aria-label="${esc(ui("edu.diploma"))}">
-        <img src="${e.diploma}" alt="${T(e.school)}" loading="lazy">
+      ${DIPLOMA ? `<button class="diploma-thumb" data-diploma="${i}" aria-label="${esc(ui("edu.diploma"))}">
+        <div class="dip" role="img" aria-label="${T(e.school)}" style="background-image:url('${e.diploma}')"></div>
         <span class="zoom"><i class="fa-solid fa-magnifying-glass-plus"></i>${esc(ui("edu.diploma"))}</span>
       </button>` : `<div class="diploma-lock"><i class="fa-solid fa-user-lock"></i><span>${esc(ui("docs.diploma"))}</span></div>`}
       <div class="edu-body">
@@ -222,7 +224,7 @@ function renderExperience() {
     </article>`).join("");
   $("#education-table").innerHTML = tbl(ui("tbl.edu"), education.map((e, i) => `
     <tr><td class="t-name">${T(e.school)}</td><td>${T(e.degree)}</td><td class="t-hl">${gpa(e)}</td><td class="t-dim">${esc(e.period)}</td>
-    <td>${DOCS ? `<button class="link-btn" data-diploma="${i}"><i class="fa-regular fa-image"></i> ${esc(ui("edu.diploma"))}</button>` : `<span class="c-dim">${esc(ui("docs.diploma"))}</span>`}</td></tr>`).join(""));
+    <td>${DIPLOMA ? `<button class="link-btn" data-diploma="${i}"><i class="fa-regular fa-image"></i> ${esc(ui("edu.diploma"))}</button>` : `<span class="c-dim">${esc(ui("docs.diploma"))}</span>`}</td></tr>`).join(""));
   $("#edu-meta").textContent = ui("rows", education.length);
 }
 
@@ -489,9 +491,9 @@ async function openEntry(id) {
 
 function openDiploma(i) {
   const e = education[i];
-  if (!e || !DOCS) return;
+  if (!e || !DIPLOMA) return;
   $("#modal-title").textContent = `SELECT diploma FROM education WHERE school = '${t(e.school)}';`;
-  $("#modal-body").innerHTML = `<img class="diploma" src="${e.diploma}" alt="${T(e.school)}">`;
+  $("#modal-body").innerHTML = `<div class="dip big" role="img" aria-label="${T(e.school)}" style="background-image:url('${e.diploma}')"></div>`;
   $("#modal").showModal();
 }
 
@@ -849,3 +851,6 @@ loader.track("globe", SHOT ? Promise.resolve() : import("./globe.js")
   .catch((e) => console.warn("globe disabled:", e)));
 loader.track("badge", SHOT ? Promise.resolve() : import("./card.js").then((m) => m.initBadge($("#badge"), { ...profile, role: profile.role.en, based_in: profile.based_in.en })).catch((e) => console.warn("badge disabled:", e)));
 loader.finish();
+
+// Diploma display copies are view-only: no right-click save, no dragging.
+["contextmenu", "dragstart"].forEach((ev) => document.addEventListener(ev, (e) => { if (e.target.closest && e.target.closest(".dip, .diploma-thumb")) e.preventDefault(); }));

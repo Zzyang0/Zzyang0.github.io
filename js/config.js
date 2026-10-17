@@ -6,6 +6,10 @@ export const config = {
   // (those files are also git-ignored). Set true locally to see them.
   showPrivateDocs: false,
 
+  // true = show the diploma display copies (small, watermarked, view-only) from assets/diploma-preview/.
+  // The original scans in assets/diplomas/ are git-ignored and never published.
+  showDiplomas: true,
+
   // true = show the resume viewer and downloads. The PDFs in assets/resume-public/ are built from tools/resume/*.html.
   showResume: true,
 

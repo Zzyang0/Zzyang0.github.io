@@ -381,3 +381,10 @@ table.kv td:first-child { color: var(--magenta); }
 .c-tile[data-k="linkedin"] { --ac: #4aa3ff; } .c-tile[data-k="instagram"] { --ac: #ff5fa2; } .c-tile[data-k="spotify"] { --ac: #2be16f; }
 .s-kind { color: var(--magenta); border-color: rgba(255, 61, 139, 0.4); }
 .hero-meta { color: var(--muted); }
+
+/* diploma display copies: background images (no "save image"), view-only */
+.dip { width: 100%; aspect-ratio: 1000 / 772; background: center / cover no-repeat; pointer-events: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; transition: transform 0.5s ease, filter 0.3s; filter: saturate(0.95); }
+.diploma-thumb { aspect-ratio: 1000 / 772; }
+.diploma-thumb:hover .dip { transform: scale(1.04); filter: none; }
+#modal-body .dip.big { border-radius: 12px; border: 1px solid var(--line); margin: 0; }
+@media print { .dip, .diploma-thumb { display: none !important; } }
