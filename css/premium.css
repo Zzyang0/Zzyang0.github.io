@@ -388,3 +388,7 @@ table.kv td:first-child { color: var(--magenta); }
 .diploma-thumb:hover .dip { transform: scale(1.04); filter: none; }
 #modal-body .dip.big { border-radius: 12px; border: 1px solid var(--line); margin: 0; }
 @media print { .dip, .diploma-thumb { display: none !important; } }
+
+/* keep the descenders of "y" and "g" inside the gradient-clipped box */
+h1.glitch { line-height: 1.16; padding: 0.04em 0.06em 0.16em 0; margin-bottom: -0.06em; }
+.aka { margin-top: 10px; }
