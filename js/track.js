@@ -6,6 +6,8 @@
 // ============================================================
 import { config } from "./config.js";
 
+// the local counter only exists when served by serve.ps1 (or when config.api is a full URL)
+const hasBackend = /^https?:/.test(config.api) || ["localhost", "127.0.0.1", "[::1]"].includes(location.hostname);
 const dnt = navigator.doNotTrack === "1" || window.doNotTrack === "1";
 
 function visitorId() {
@@ -30,6 +32,7 @@ function refHost() {
 }
 
 async function send(body) {
+  if (!hasBackend) return null;
   try {
     const res = await fetch(`${config.api}/hit`, {
       method: "POST", headers: { "Content-Type": "application/json" },
@@ -41,6 +44,7 @@ async function send(body) {
 }
 
 export async function fetchCount() {
+  if (!hasBackend) return null;
   try {
     const res = await fetch(`${config.api}/count`, { cache: "no-store" });
     return res.ok ? await res.json() : null;
