@@ -86,7 +86,7 @@ powershell -ExecutionPolicy Bypass -File update-github.ps1
 
 ## Privacy note
 
-The resume viewer uses redacted PDFs (no phone number) in `assets/resume-public/`, built from `tools/resume/*.html` with `tools/build-resume.ps1` (`showResume: true` in [`js/config.js`](js/config.js)). The original resumes and diploma scans are deliberately **not** in this repository: they are git-ignored and the live site shows "available on request" for the diplomas (`showPrivateDocs: false`).
+The resume viewer uses the PDFs in `assets/resume-public/`, built from `tools/resume/*.html` with `tools/build-resume.ps1` (`showResume: true` in [`js/config.js`](js/config.js)). The original resumes and diploma scans are deliberately **not** in this repository: they are git-ignored and the live site shows "available on request" for the diplomas (`showPrivateDocs: false`).
 
 ## License
 
