@@ -12,10 +12,10 @@ import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { makePaperPlane, makeTrail } from "./plane.js";
 
 const PALETTE = {
-  fog: 0x0c2a33,
-  teal: 0x3ee6e0,
-  yellow: 0xf4e04d,
-  magenta: 0xff3d8b,
+  fog: 0x0b1c24,
+  teal: 0x7cc7cd,
+  yellow: 0xd9c48f,
+  magenta: 0x9d9be0,
 };
 
 // seeded random so the skyline is the same on every visit
@@ -120,7 +120,7 @@ export function initCity(canvas) {
   scene.add(grid);
 
   // ---- buildings: 3 instanced meshes with different window tints ----
-  const tints = ["#3ee6e0", "#ff3d8b", "#f4e04d"];
+  const tints = ["#7cc7cd", "#9d9be0", "#d9c48f"];
   const box = new THREE.BoxGeometry(1, 1, 1);
   box.translate(0, 0.5, 0);
   const AVENUE = 14;         // half-width of the empty street the camera flies down
@@ -169,7 +169,7 @@ export function initCity(canvas) {
   scene.add(new THREE.Points(lightGeo, lightMat));
 
   // ---- neon signs: my footprints, in the order the camera passes them ----
-  const Y = "#e6d35c", T = "#58d3cf", M = "#e0699b";
+  const Y = "#d9c48f", T = "#7cc7cd", M = "#9d9be0";
   const signs = [
     { text: "FRANK.DB", sub: "SELECT * FROM life", color: Y, left: true, y: 15, z: 18 },
     { text: "彰化", color: M, left: false, y: 26, z: -6, vertical: true },
@@ -212,7 +212,7 @@ export function initCity(canvas) {
   }
   const rainGeo = new THREE.BufferGeometry();
   rainGeo.setAttribute("position", new THREE.BufferAttribute(rainPos, 3));
-  const rain = new THREE.LineSegments(rainGeo, new THREE.LineBasicMaterial({ color: 0x9fdfe6, transparent: true, opacity: 0.22 }));
+  const rain = new THREE.LineSegments(rainGeo, new THREE.LineBasicMaterial({ color: 0xb9d6dc, transparent: true, opacity: 0.14 }));
   scene.add(rain);
 
   // ---- the traveller: a glowing paper plane weaving down the avenue ----

@@ -9,7 +9,7 @@ import { makePaperPlane, makeTrail } from "./plane.js";
 
 const R = 5;
 const LAND_MAP = "https://cdn.jsdelivr.net/npm/three-globe@2.31.0/example/img/earth-water.png";
-const TEAL = 0x58d3cf, YELLOW = 0xe6d35c, MAGENTA = 0xe0699b;
+const TEAL = 0x7cc7cd, YELLOW = 0xd9c48f, MAGENTA = 0x9d9be0;
 
 function toVec(lat, lng, r = R) {
   const phi = (90 - lat) * (Math.PI / 180);
@@ -115,7 +115,7 @@ export async function initGlobe(canvas, labelsEl, stops, { label, onActive }) {
     }
     const dots = new THREE.Points(
       new THREE.BufferGeometry().setFromPoints(pts),
-      new THREE.PointsMaterial({ color: 0x6fd8d2, size: 1.8 * Math.min(devicePixelRatio, 2), sizeAttenuation: false, transparent: true, opacity: 0.75 })
+      new THREE.PointsMaterial({ color: 0x8fd0d4, size: 1.8 * Math.min(devicePixelRatio, 2), sizeAttenuation: false, transparent: true, opacity: 0.6 })
     );
     world.add(dots);
   }

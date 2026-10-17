@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FRANK.DB · Tzuyang Lin 林子洋</title>
   <meta name="description" content="Tzuyang (Frank) Lin: data analyst and field deployment engineer. Projects, skills, resume, footprints and a personal log, served from a database.">
-  <meta name="theme-color" content="#05080b">
+  <meta name="theme-color" content="#07090c">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="FRANK.DB">
@@ -16,9 +16,10 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&family=Silkscreen:wght@400;700&family=Noto+Sans+SC:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@400;500&family=Silkscreen:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/premium.css">
   <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -73,7 +74,7 @@
     <div class="hero-vignette"></div>
     <div class="hero-content">
       <p class="conn">&gt; <span data-i18n="hero.conn">CONNECTED TO</span> <b>lin.frank@frank.db</b> · <span id="latency">12</span>ms</p>
-      <h1 class="glitch" data-text="TZUYANG LIN">TZUYANG LIN</h1>
+      <h1 class="glitch" data-text="Tzuyang Lin">Tzuyang Lin</h1>
       <p class="aka"><span class="tag">AKA</span> FRANK <span class="zh">林子洋</span></p>
       <p class="titles" id="titles"></p>
       <p class="tagline" id="tagline"></p>
@@ -85,6 +86,7 @@
       </form>
       <div class="console-out" id="console-out" aria-live="polite"></div>
     </div>
+    <div class="hero-meta" aria-hidden="true"><span>31.2304&deg; N &nbsp; 121.4737&deg; E</span><span>Shanghai</span><span>Data analyst &rarr; Field deployment engineer</span></div>
     <div class="visit-badge" id="visit-badge" hidden><i class="fa-solid fa-eye"></i><span class="js-visits"></span></div>
   </section>
 
@@ -181,7 +183,7 @@
           <div class="seg big" id="resume-tabs" role="tablist"></div>
           <div class="resume-actions" id="resume-actions"></div>
         </div>
-        <div class="resume-frame-wrap"><iframe id="resume-frame" title="Resume PDF"></iframe></div>
+        <div class="resume-frame-wrap"><a id="resume-paper" class="resume-paper" target="_blank" rel="noopener"><img id="resume-img" alt="Resume preview" decoding="async"></a></div>
         <p class="resume-note" data-i18n="resume.note"></p>
         <div class="rows-meta" id="resume-meta"></div>
       </section>
@@ -221,6 +223,7 @@
   </dialog>
 
   <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="js/polish.js" defer></script>
   <script type="module" src="js/main.js"></script>
 </body>
 </html>

@@ -6,6 +6,9 @@ export const config = {
   // (those files are also git-ignored). Set true locally to see them.
   showPrivateDocs: false,
 
+  // true = show the resume viewer and downloads. The PDFs in assets/resume-public/ have no phone number.
+  showResume: true,
+
   // Visit counter backend. serve.ps1 provides /api locally.
   // On static hosting (GitHub Pages) there is no backend, so the counter hides itself.
   api: "/api",

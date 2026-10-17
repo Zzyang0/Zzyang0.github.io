@@ -27,12 +27,12 @@ function frontTexture(profile, img) {
 
   g.fillStyle = "#081015"; g.fillRect(0, 0, W, H);
   // grid backdrop
-  g.strokeStyle = "rgba(62,230,224,0.08)"; g.lineWidth = 1;
+  g.strokeStyle = "rgba(143,216,214,0.07)"; g.lineWidth = 1;
   for (let x = 0; x < W; x += 20) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, H); g.stroke(); }
   for (let y = 0; y < H; y += 20) { g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke(); }
 
   // header band
-  g.fillStyle = "#f4e04d"; g.fillRect(0, 0, W, 86);
+  g.fillStyle = "#d9c48f"; g.fillRect(0, 0, W, 86);
   g.fillStyle = "#000"; g.font = "bold 40px Silkscreen, monospace"; g.textBaseline = "middle";
   g.fillText("FRANK.DB", 34, 46);
   g.font = "600 18px 'JetBrains Mono', monospace"; g.textAlign = "right";
@@ -48,17 +48,17 @@ function frontTexture(profile, img) {
     g.fillStyle = "rgba(90,200,210,0.35)"; g.fillRect(px, py, pw, ph);
     g.globalCompositeOperation = "source-over";
   }
-  g.strokeStyle = "#3ee6e0"; g.lineWidth = 3; g.strokeRect(px, py, pw, ph);
+  g.strokeStyle = "#8fd8d6"; g.lineWidth = 2; g.strokeRect(px, py, pw, ph);
   // corner ticks
-  g.fillStyle = "#ff3d8b";
+  g.fillStyle = "#9d9be0";
   [[px, py], [px + pw - 24, py], [px, py + ph - 6], [px + pw - 24, py + ph - 6]].forEach(([x, y]) => g.fillRect(x, y, 24, 6));
 
   // name block
   g.fillStyle = "#ffffff"; g.font = "bold 50px Silkscreen, monospace";
   g.fillText(profile.name.toUpperCase(), 34, 618);
-  g.fillStyle = "#f4e04d"; g.font = "600 26px 'JetBrains Mono', monospace";
+  g.fillStyle = "#d9c48f"; g.font = "600 26px 'JetBrains Mono', monospace";
   g.fillText(`AKA ${profile.aka.toUpperCase()}  ·  ${profile.name_zh}`, 34, 668);
-  g.fillStyle = "#3ee6e0"; g.font = "400 22px 'JetBrains Mono', monospace";
+  g.fillStyle = "#8fd8d6"; g.font = "400 22px 'JetBrains Mono', monospace";
   g.fillText(profile.role.toUpperCase() + "  //  " + profile.based_in.toUpperCase(), 34, 710);
 
   // fields
@@ -88,9 +88,9 @@ function backTexture(profile) {
   c.width = W; c.height = H;
   const g = c.getContext("2d");
   g.fillStyle = "#0a0f12"; g.fillRect(0, 0, W, H);
-  g.fillStyle = "#ff3d8b"; g.fillRect(0, 0, W, 10);
+  g.fillStyle = "#9d9be0"; g.fillRect(0, 0, W, 10);
 
-  g.fillStyle = "#3ee6e0"; g.font = "400 22px 'JetBrains Mono', monospace";
+  g.fillStyle = "#8fd8d6"; g.font = "400 22px 'JetBrains Mono', monospace";
   const lines = [
     "-- schema: human",
     "CREATE TABLE frank (",
@@ -107,7 +107,7 @@ function backTexture(profile) {
     ");",
   ];
   lines.forEach((l, i) => {
-    g.fillStyle = l.startsWith("--") ? "#6f8a93" : i === 1 || i === 12 ? "#ff3d8b" : "#cfe0e6";
+    g.fillStyle = l.startsWith("--") ? "#6f8a93" : i === 1 || i === 12 ? "#9d9be0" : "#cfe0e6";
     g.fillText(l, 40, 90 + i * 40);
   });
 
@@ -116,7 +116,7 @@ function backTexture(profile) {
   const size = 14, ox = 40, oy = 650;
   for (let yy = 0; yy < 14; yy++) for (let xx = 0; xx < 14; xx++) {
     s = (s * 16807) % 2147483647;
-    if (s % 2) { g.fillStyle = "#f4e04d"; g.fillRect(ox + xx * size, oy + yy * size, size - 1, size - 1); }
+    if (s % 2) { g.fillStyle = "#d9c48f"; g.fillRect(ox + xx * size, oy + yy * size, size - 1, size - 1); }
   }
   g.fillStyle = "#6f8a93"; g.font = "400 18px 'JetBrains Mono', monospace";
   g.fillText("scan me? nah,", 280, 700);
@@ -138,8 +138,8 @@ export async function initBadge(canvas, profile) {
   camera.position.set(0, 0, 9.2);
 
   scene.add(new THREE.AmbientLight(0xffffff, 0.9));
-  const key = new THREE.PointLight(0x3ee6e0, 30, 30); key.position.set(-4, 3, 5); scene.add(key);
-  const rim = new THREE.PointLight(0xff3d8b, 30, 30); rim.position.set(4, -3, 3); scene.add(rim);
+  const key = new THREE.PointLight(0x8fd8d6, 26, 30); key.position.set(-4, 3, 5); scene.add(key);
+  const rim = new THREE.PointLight(0x9d9be0, 26, 30); rim.position.set(4, -3, 3); scene.add(rim);
 
   await document.fonts?.ready;
   const img = await loadImage(profile.photo);

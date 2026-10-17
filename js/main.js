@@ -9,6 +9,7 @@ import { config } from "./config.js";
 
 // Resume PDFs and diploma scans are only shown when config.showPrivateDocs is true.
 const DOCS = !!config.showPrivateDocs;
+const RESUME = !!config.showResume;
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -32,7 +33,7 @@ const SECTIONS = [
   { id: "experience", key: "nav.experience", icon: "fa-solid fa-briefcase", count: experience.length + education.length },
   { id: "projects", key: "nav.projects", icon: "fa-solid fa-flask", count: projects.length },
   { id: "skills", key: "nav.skills", icon: "fa-solid fa-screwdriver-wrench", count: skills.reduce((n, g) => n + g.items.length, 0) + learning.length },
-  { id: "resume", key: "nav.resume", icon: "fa-solid fa-file-pdf", count: config.showPrivateDocs ? profile.resumes.length : 0 },
+  { id: "resume", key: "nav.resume", icon: "fa-solid fa-file-pdf", count: RESUME ? profile.resumes.length : 0 },
   { id: "log", key: "nav.log", icon: "fa-solid fa-camera-retro", count: log.length },
   { id: "contact", key: "nav.contact", icon: "fa-solid fa-satellite-dish", count: contact.length },
 ];
@@ -354,8 +355,8 @@ function renderSkills() {
 /* ---------- resume ---------- */
 function renderResume() {
   const sec_ = $("#resume");
-  sec_.classList.toggle("resume-private", !DOCS);
-  if (!DOCS) {
+  sec_.classList.toggle("resume-private", !RESUME);
+  if (!RESUME) {
     // no files are published: offer the same information on request instead
     $("#resume-private").innerHTML = `
       <i class="fa-solid fa-file-shield"></i>
@@ -376,9 +377,10 @@ function renderResume() {
     profile.resumes.map((x) => `<a class="btn ${x.lang === r.lang ? "primary" : "gold"}" href="${x.file}" download="${x.download}"><i class="fa-solid fa-download"></i>${esc(ui("resume.dl"))} · ${esc(x.label)}</a>`).join("");
   $("#resume-meta").textContent = ui("rows", profile.resumes.length);
   if (current === "resume") {
-    const frame = $("#resume-frame");
-    const src = `${r.file}#view=FitH`;
-    if (frame.dataset.src !== src) { frame.dataset.src = src; frame.src = src; }
+    const img = $("#resume-img");
+    if (img.dataset.src !== r.preview) { img.dataset.src = r.preview; img.src = r.preview; }
+    img.alt = `${r.label} resume`;
+    $("#resume-paper").href = r.file;
   }
 }
 
@@ -551,7 +553,7 @@ function buildDB() {
     learning: { cols: ["topic", "status"], rows: learning.map((l) => [l.name, ui("learn.status")]) },
     log: { cols: ["id", "date", "type", "title", "tags"], rows: log.map((e) => [e.id, e.date, e.type, L(e.title), e.tags || []]) },
     contact: { cols: ["channel", "handle", "url"], rows: contact.map((c) => [c.key, L(c.label), c.url]) },
-    resume: { cols: ["lang", "file"], rows: DOCS ? profile.resumes.map((r) => [r.lang, r.file]) : [] },
+    resume: { cols: ["lang", "file"], rows: RESUME ? profile.resumes.map((r) => [r.lang, r.file]) : [] },
   };
 }
 

@@ -27,10 +27,10 @@ export const profile = {
   },
   based_in: { en: "Shanghai, CN", zh: "上海" },
   photo: "assets/photos/polaroid.jpg",
-  resume: { en: "assets/resume/Tzuyang_Lin_Resume.pdf", zh: "assets/resume/Tzuyang_Lin_Resume_zh.pdf" },
+  resume: { en: "assets/resume-public/Tzuyang_Lin_Resume.pdf", zh: "assets/resume-public/Tzuyang_Lin_Resume_zh.pdf" },
   resumes: [
-    { lang: "en", label: "English", file: "assets/resume/Tzuyang_Lin_Resume.pdf", download: "Tzuyang_Lin_Resume.pdf" },
-    { lang: "zh", label: "中文", file: "assets/resume/Tzuyang_Lin_Resume_zh.pdf", download: "林子洋_简历.pdf" },
+    { lang: "en", label: "English", file: "assets/resume-public/Tzuyang_Lin_Resume.pdf", preview: "assets/resume-public/Tzuyang_Lin_Resume.jpg", download: "Tzuyang_Lin_Resume.pdf" },
+    { lang: "zh", label: "中文", file: "assets/resume-public/Tzuyang_Lin_Resume_zh.pdf", preview: "assets/resume-public/Tzuyang_Lin_Resume_zh.jpg", download: "林子洋_简历.pdf" },
   ],
   bio: {
     en: [
