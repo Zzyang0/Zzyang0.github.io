@@ -12,13 +12,13 @@ Tzuyang (Frank) Lin · 林子洋 · data analyst & field deployment engineer
 ![Bilingual](https://img.shields.io/badge/languages-EN%20%2F%20%E4%B8%AD%E6%96%87-ff3d8b?style=flat-square&labelColor=05080b)
 ![No build step](https://img.shields.io/badge/build-none-7be9b8?style=flat-square&labelColor=05080b)
 
-<img src="docs/screenshots/hero.png" alt="FRANK.DB home page: a rainy neon city with street signs for every place I have lived" width="900">
+<img src="docs/screenshots/hero.png" alt="FRANK.DB home page: a quiet dark portfolio with a 3D city skyline behind the name" width="900">
 
 </div>
 
 ## What is this?
 
-Everything I've done is a row in some table, so the site is built like one: a rainy neon city whose street signs are the places I've lived, a SQL console, and a globe that flies a paper plane through my life so far.
+Everything I've done is a row in some table, so the site is built like one: a 3D dusk-lit city whose signs are the places I've lived, a SQL console, and a globe that flies a paper plane through my life so far. The look is deliberately quiet and precise: graphite surfaces, hairline borders, serif display type and one aqua accent.
 
 | | |
 |---|---|
@@ -27,6 +27,7 @@ Everything I've done is a row in some table, so the site is built like one: a ra
 | ![Projects](docs/screenshots/projects-cards.png) | ![Heatmap](docs/screenshots/projects-heatmap.png) |
 | **Projects as cards**, filterable by topic. | **Heatmap**: all my public GitHub contributions in one strip, with a diamond where each project began. |
 | ![SQL view](docs/screenshots/sql-view.png) | ![Chinese](docs/screenshots/chinese.png) |
+| ![Resume](docs/screenshots/resume.png) | ![Skills](docs/screenshots/skills.png) |
 | **SQL view**: the same content as queries and tables. | **中文**: the whole site in Chinese, one click. |
 
 ## Features
@@ -85,7 +86,7 @@ powershell -ExecutionPolicy Bypass -File update-github.ps1
 
 ## Privacy note
 
-My resume PDFs and diploma scans are deliberately **not** in this repository: the live site shows "available on request" instead (`showPrivateDocs: false` in [`js/config.js`](js/config.js), and the files are git-ignored).
+The resume viewer uses redacted PDFs (no phone number) in `assets/resume-public/`, built from `tools/resume/*.html` with `tools/build-resume.ps1` (`showResume: true` in [`js/config.js`](js/config.js)). The original resumes and diploma scans are deliberately **not** in this repository: they are git-ignored and the live site shows "available on request" for the diplomas (`showPrivateDocs: false`).
 
 ## License
 
