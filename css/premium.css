@@ -392,3 +392,6 @@ table.kv td:first-child { color: var(--magenta); }
 /* keep the descenders of "y" and "g" inside the gradient-clipped box */
 h1.glitch { line-height: 1.16; padding: 0.04em 0.06em 0.16em 0; margin-bottom: -0.06em; }
 .aka { margin-top: 10px; }
+
+/* extra headroom so tall display sizes never clip the tails of y and g */
+h1.glitch { padding-bottom: 0.24em; margin-bottom: -0.14em; overflow: visible; }
