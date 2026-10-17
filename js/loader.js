@@ -26,13 +26,13 @@ export function startLoader() {
 
   function draw() {
     // translucent fill leaves fading trails; low alpha = low contrast
-    g.fillStyle = "rgba(6,8,11,0.16)";
+    g.fillStyle = "rgba(3,6,7,0.14)";
     g.fillRect(0, 0, canvas.width, canvas.height);
     g.font = `${fs}px "JetBrains Mono", monospace`;
     cols.forEach((y, i) => {
       const ch = GLYPHS[(Math.random() * GLYPHS.length) | 0];
       const x = i * fs;
-      g.fillStyle = Math.random() < 0.04 ? "rgba(235,244,248,0.6)" : "rgba(143,216,214,0.34)";
+      g.fillStyle = Math.random() < 0.04 ? "rgba(220,255,250,0.75)" : "rgba(79,214,170,0.55)";
       g.fillText(ch, x, y * fs);
       cols[i] = y * fs > canvas.height && Math.random() > 0.975 ? 0 : y + 0.6;
     });

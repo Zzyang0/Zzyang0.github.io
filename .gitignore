@@ -10,3 +10,6 @@ assets/diplomas/
 Thumbs.db
 desktop.ini
 .vscode/
+
+# local-only settings (show diplomas on your own machine)
+js/config.local.js

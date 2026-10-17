@@ -17,3 +17,10 @@ export const config = {
   // and put your site code here (e.g. "frank" for frank.goatcounter.com). Leave empty to skip.
   goatcounter: "",
 };
+
+// Local-only overrides (git-ignored): create js/config.local.js containing
+//   export default { showPrivateDocs: true };
+// to see the diploma scans while running serve.ps1 on your own machine. The published site never loads it.
+if (["localhost", "127.0.0.1", "[::1]"].includes(location.hostname)) {
+  try { Object.assign(config, (await import("./config.local.js")).default || {}); } catch { /* no local file: nothing to do */ }
+}
